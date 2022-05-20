@@ -22,6 +22,7 @@ package org.apache.isis.core.metamodel.facetapi;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.isis.applib.filter.Filter;
 
@@ -30,7 +31,7 @@ import org.apache.isis.applib.filter.Filter;
  */
 public class FacetHolderImpl implements FacetHolder {
 
-    private final Map<Class<? extends Facet>, Facet> facetsByClass = new HashMap<Class<? extends Facet>, Facet>();
+    private final Map<Class<? extends Facet>, Facet> facetsByClass = new ConcurrentHashMap<Class<? extends Facet>, Facet>();
 
     @Override
     public boolean containsFacet(final Class<? extends Facet> facetType) {
