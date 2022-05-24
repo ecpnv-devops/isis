@@ -31,7 +31,7 @@ import org.apache.isis.applib.filter.Filter;
  */
 public class FacetHolderImpl implements FacetHolder {
 
-    private final Map<Class<? extends Facet>, Facet> facetsByClass = new ConcurrentHashMap<Class<? extends Facet>, Facet>();
+    private final Map<Class<? extends Facet>, Facet> facetsByClass = new ConcurrentHashMap<>();
 
     @Override
     public boolean containsFacet(final Class<? extends Facet> facetType) {
