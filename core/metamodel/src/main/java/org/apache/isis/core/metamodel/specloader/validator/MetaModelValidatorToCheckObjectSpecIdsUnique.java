@@ -51,7 +51,7 @@ public class MetaModelValidatorToCheckObjectSpecIdsUnique extends MetaModelValid
 
     private void addValidatorToEnsureUniqueObjectIds() {
 
-        final Map<ObjectSpecId, List<ObjectSpecification>> specsById = Maps.newHashMap();
+        final Map<ObjectSpecId, List<ObjectSpecification>> specsById = Maps.newConcurrentMap();
 
         MetaModelValidatorVisiting.SummarizingVisitor ensureUniqueObjectIds = new MetaModelValidatorVisiting.SummarizingVisitor(){
 

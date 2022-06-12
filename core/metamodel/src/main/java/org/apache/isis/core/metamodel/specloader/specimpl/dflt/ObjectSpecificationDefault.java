@@ -406,8 +406,8 @@ public class ObjectSpecificationDefault extends ObjectSpecificationAbstract impl
         return membersByMethod.get(method);
     }
 
-    private HashMap<Method, ObjectMember> catalogueMembers() {
-        final HashMap<Method, ObjectMember> membersByMethod = Maps.newHashMap();
+    private Map<Method, ObjectMember> catalogueMembers() {
+        final Map<Method, ObjectMember> membersByMethod = Maps.newConcurrentMap();
         cataloguePropertiesAndCollections(membersByMethod);
         catalogueActions(membersByMethod);
         return membersByMethod;

@@ -90,7 +90,7 @@ public class GridLoaderServiceDefault implements GridLoaderService2 {
     }
 
     // for better logging messages (used only in prototyping mode)
-    private final Map<DomainClassAndLayout, String> badXmlByDomainClassAndLayout = Maps.newHashMap();
+    private final Map<DomainClassAndLayout, String> badXmlByDomainClassAndLayout = Maps.newConcurrentMap();
 
     static class DomainClassAndLayoutAndXml {
         private final DomainClassAndLayout domainClassAndLayout;
@@ -124,7 +124,7 @@ public class GridLoaderServiceDefault implements GridLoaderService2 {
     }
 
     // cache (used only in prototyping mode)
-    private final Map<DomainClassAndLayoutAndXml, Grid> gridByDomainClassAndLayoutAndXml = Maps.newHashMap();
+    private final Map<DomainClassAndLayoutAndXml, Grid> gridByDomainClassAndLayoutAndXml = Maps.newConcurrentMap();
 
     private JAXBContext jaxbContext;
 

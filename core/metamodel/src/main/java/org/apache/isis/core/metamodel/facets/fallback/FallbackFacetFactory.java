@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.common.collect.Lists;
 
@@ -38,7 +39,7 @@ import org.apache.isis.core.metamodel.facets.TypedHolder;
 /**
  * Central point for providing some kind of default for any {@link Facet}s
  * required by the Apache Isis framework itself.
- * 
+ *
  */
 public class FallbackFacetFactory extends FacetFactoryAbstract {
 
@@ -47,7 +48,7 @@ public class FallbackFacetFactory extends FacetFactoryAbstract {
 
 
     @SuppressWarnings("unused")
-    private final static Map<Class<?>, Integer> TYPICAL_LENGTHS_BY_CLASS = new HashMap<Class<?>, Integer>() {
+    private final static Map<Class<?>, Integer> TYPICAL_LENGTHS_BY_CLASS = new ConcurrentHashMap<Class<?>, Integer>() {
         private static final long serialVersionUID = 1L;
         {
             putTypicalLength(byte.class, Byte.class, 3);

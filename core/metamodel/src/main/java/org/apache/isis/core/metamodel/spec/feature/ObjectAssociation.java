@@ -133,7 +133,7 @@ public interface ObjectAssociation extends ObjectMember, CurrentHolder {
 
     public static class Functions {
         private Functions(){}
-        
+
         public static Function<ObjectAssociation, String> toName() {
             return new Function<ObjectAssociation, String>() {
                 @Override
@@ -152,19 +152,19 @@ public interface ObjectAssociation extends ObjectMember, CurrentHolder {
             };
         }
     }
-    
+
     // //////////////////////////////////////////////////////
     // Predicates
     // //////////////////////////////////////////////////////
 
     public static class Predicates {
         private Predicates(){}
-        
+
         public static Predicate<ObjectAssociation> being(final Contributed contributed) {
             return new Predicate<ObjectAssociation>(){
                 @Override
                 public boolean apply(final ObjectAssociation t) {
-                    return contributed.isIncluded() || 
+                    return contributed.isIncluded() ||
                            !(t instanceof ContributeeMember);
                 }
             };
@@ -236,7 +236,7 @@ public interface ObjectAssociation extends ObjectMember, CurrentHolder {
         }
 
     }
-    
+
     // //////////////////////////////////////////////////////
     // Filters
     // //////////////////////////////////////////////////////
@@ -268,11 +268,11 @@ public interface ObjectAssociation extends ObjectMember, CurrentHolder {
         public final static Filter<ObjectAssociation> REFERENCE_PROPERTIES = new Filter<ObjectAssociation>() {
             @Override
             public boolean accept(final ObjectAssociation association) {
-                return association.isOneToOneAssociation() && 
+                return association.isOneToOneAssociation() &&
                        !association.getSpecification().containsDoOpFacet(ValueFacet.class);
             }
         };
-        
+
         /**
          * Filters only fields that are for properties (ie 1:1 associations)
          *
@@ -433,10 +433,10 @@ public interface ObjectAssociation extends ObjectMember, CurrentHolder {
 
     public static class Util {
         private Util(){}
-        
+
         public static Map<String, List<ObjectAssociation>> groupByMemberOrderName(
                 final List<ObjectAssociation> associations) {
-            Map<String, List<ObjectAssociation>> associationsByGroup = Maps.newHashMap();
+            Map<String, List<ObjectAssociation>> associationsByGroup = Maps.newConcurrentMap();
             for(ObjectAssociation association: associations) {
                 addAssociationIntoGroup(associationsByGroup, association);
             }

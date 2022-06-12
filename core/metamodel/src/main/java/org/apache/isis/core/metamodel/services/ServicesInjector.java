@@ -84,9 +84,9 @@ public class ServicesInjector implements ApplicationScopedComponent {
      * If no key, not yet searched for type; otherwise the corresponding value is a {@link List} of all
      * services that are assignable to the type.  It's possible that this is an empty list.
      */
-    private final Map<Class<?>, List<Object>> servicesAssignableToType = Maps.newHashMap();
+    private final Map<Class<?>, List<Object>> servicesAssignableToType = Maps.newConcurrentMap();
 
-    private final Map<Class<?>, Object> serviceByConcreteType = Maps.newHashMap();
+    private final Map<Class<?>, Object> serviceByConcreteType = Maps.newConcurrentMap();
 
     private final InjectorMethodEvaluator injectorMethodEvaluator;
     private final boolean autowireSetters;

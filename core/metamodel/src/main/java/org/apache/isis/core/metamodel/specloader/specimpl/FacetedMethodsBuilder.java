@@ -173,7 +173,7 @@ public class FacetedMethodsBuilder {
         this.layoutMetadataReaders = facetedMethodsBuilderContext.layoutMetadataReaders;
         this.explicitAnnotationsForActions = facetedMethodsBuilderContext.configService.getBoolean("isis.reflector.explicitAnnotations.action");
 
-        this.supportByReader = Maps.newHashMap();
+        this.supportByReader = Maps.newConcurrentMap();
         for (LayoutMetadataReader reader : layoutMetadataReaders) {
 
             if(reader instanceof LayoutMetadataReader2) {

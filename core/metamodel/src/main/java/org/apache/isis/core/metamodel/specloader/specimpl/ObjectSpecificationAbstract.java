@@ -108,7 +108,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
         private final List<ObjectSpecification> classes = Lists.newArrayList();
 
         public void addSubclass(final ObjectSpecification subclass) {
-            if(classes.contains(subclass)) { 
+            if(classes.contains(subclass)) {
                 return;
             }
             classes.add(subclass);
@@ -141,7 +141,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
     private final Map<ActionType, List<ObjectAction>> objectActionsByType = createObjectActionsByType();
 
     private static Map<ActionType, List<ObjectAction>> createObjectActionsByType() {
-        final Map<ActionType, List<ObjectAction>> map = Maps.newHashMap();
+        final Map<ActionType, List<ObjectAction>> map = Maps.newConcurrentMap();
         for (final ActionType type : ActionType.values()) {
             map.put(type, Lists.<ObjectAction>newArrayList());
         }
@@ -187,7 +187,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
         this.correspondingClass = introspectedClass;
         this.fullName = introspectedClass.getName();
         this.shortName = shortName;
-        
+
         this.isAbstract = ClassExtensions.isAbstract(introspectedClass);
         this.identifier = Identifier.classIdentifier(introspectedClass);
 
@@ -199,7 +199,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
         this.postProcessor = postProcessor;
     }
 
-    
+
     //endregion
 
     //region > Stuff immediately derivable from class
@@ -219,7 +219,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
         }
         return specId;
     }
-    
+
     /**
      * As provided explicitly within the constructor.
      *
@@ -432,25 +432,25 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
     /**
      * Determines if this class represents the same class, or a subclass, of the
      * specified class.
-     * 
+     *
      * <p>
      * cf {@link Class#isAssignableFrom(Class)}, though target and parameter are
      * the opposite way around, ie:
-     * 
+     *
      * <pre>
      * cls1.isAssignableFrom(cls2);
      * </pre>
      * <p>
      * is equivalent to:
-     * 
+     *
      * <pre>
      * spec2.isOfType(spec1);
      * </pre>
-     * 
+     *
      */
     @Override
     public boolean isOfType(final ObjectSpecification specification) {
-        // do the comparison using value types because of a possible aliasing/race condition 
+        // do the comparison using value types because of a possible aliasing/race condition
         // in matchesParameterOf when building up contributed associations
         if (specification.getSpecId().equals(this.getSpecId())) {
             return true;
@@ -711,14 +711,14 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
 
     /**
      * The association with the given {@link ObjectAssociation#getId() id}.
-     * 
+     *
      * <p>
      * This is overridable because {@link org.apache.isis.core.metamodel.specloader.specimpl.standalonelist.ObjectSpecificationOnStandaloneList}
      * simply returns <tt>null</tt>.
-     * 
+     *
      * <p>
      * TODO put fields into hash.
-     * 
+     *
      * <p>
      * TODO: could this be made final? (ie does the framework ever call this
      * method for an {@link org.apache.isis.core.metamodel.specloader.specimpl.standalonelist.ObjectSpecificationOnStandaloneList})
@@ -734,7 +734,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
         if(! deploymentCategory.isProduction()) {
             // automatically refresh if not in production
             // (better support for jrebel)
-            
+
             LOG.warn("Could not find association with id '{}'; invalidating cache automatically", id);
             if(!invalidatingCache.get()) {
                 // make sure don't go into an infinite loop, though.
@@ -809,7 +809,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
     @Override
     public List<ObjectAction> getObjectActions(
             final List<ActionType> types,
-            final Contributed contributed, 
+            final Contributed contributed,
             final Filter<ObjectAction> filter) {
 
         LOG.debug("{} : getObjectActions(...)", this.getFullIdentifier());
@@ -855,8 +855,8 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
 
     @Override
     public List<ObjectAction> getObjectActions(
-            final ActionType type, 
-            final Contributed contributed, 
+            final ActionType type,
+            final Contributed contributed,
             final Filter<ObjectAction> filter) {
 
         introspectUpTo(IntrospectionState.TYPE_AND_MEMBERS_INTROSPECTED);
@@ -871,13 +871,13 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
     private List<ObjectAssociation> sortAssociations(final List<ObjectAssociation> associations) {
         final DeweyOrderSet orderSet = DeweyOrderSet.createOrderSet(associations);
         final MemberGroupLayoutFacet memberGroupLayoutFacet = this.getFacet(MemberGroupLayoutFacet.class);
-        
+
         if(memberGroupLayoutFacet != null) {
             final List<String> groupOrder = Lists.newArrayList();
             groupOrder.addAll(memberGroupLayoutFacet.getLeft());
             groupOrder.addAll(memberGroupLayoutFacet.getMiddle());
             groupOrder.addAll(memberGroupLayoutFacet.getRight());
-            
+
             orderSet.reorderChildren(groupOrder);
         }
         final List<ObjectAssociation> orderedAssociations = Lists.newArrayList();
@@ -937,7 +937,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
         if (isService() || isValue()) {
             return Collections.emptyList();
         }
-        
+
         final List<ObjectAssociation> contributeeAssociations = Lists.newArrayList();
         for (final Object servicePojo : getServicePojos()) {
             addContributeeAssociationsIfAny(servicePojo, contributeeAssociations);
@@ -1120,7 +1120,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
     //region > contributee actions
     /**
      * All contributee actions (each wrapping a service's contributed action) for this spec.
-     * 
+     *
      * <p>
      * If this specification {@link #isService() is actually for} a service,
      * then returns an empty list.
@@ -1130,7 +1130,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
             return Collections.emptyList();
         }
         final List<ObjectAction> contributeeActions = Lists.newArrayList();
-            
+
         for (final Object servicePojo : getServicePojos()) {
             addContributeeActionsIfAny(servicePojo, contributeeActions);
         }
@@ -1183,7 +1183,7 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
         return hiddenFacet != null && hiddenFacet.when() == When.ALWAYS && hiddenFacet.where() == Where.ANYWHERE;
     }
 
-    
+
 
     /**
      * @param serviceAction - number of the parameter that matches, or -1 if none.

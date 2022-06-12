@@ -155,7 +155,7 @@ public class BookmarkServiceInternalDefault implements BookmarkService2 {
 
     private void cacheServicesByClassNameIfNecessary() {
         if (servicesByClassName == null) {
-            final Map<String,Object> servicesByClassName = Maps.newHashMap();
+            final Map<String,Object> servicesByClassName = Maps.newConcurrentMap();
             final List<Object> registeredServices = serviceRegistry2.getRegisteredServices();
             for (Object registeredService : registeredServices) {
                 final String serviceClassName = registeredService.getClass().getName();

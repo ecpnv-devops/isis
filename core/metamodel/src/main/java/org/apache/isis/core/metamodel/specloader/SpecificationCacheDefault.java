@@ -44,7 +44,7 @@ import org.apache.isis.core.metamodel.spec.ObjectSpecification;
  */
 class SpecificationCacheDefault {
 
-    private final Map<String, ObjectSpecification> specByClassName = Maps.newHashMap();
+    private final Map<String, ObjectSpecification> specByClassName = Maps.newConcurrentMap();
     private Map<ObjectSpecId, String> classNameBySpecId;
 
     public ObjectSpecification get(final String className) {
@@ -74,7 +74,7 @@ class SpecificationCacheDefault {
     }
 
     synchronized void init() {
-        final Map<ObjectSpecId, ObjectSpecification> specById = Maps.newHashMap();
+        final Map<ObjectSpecId, ObjectSpecification> specById = Maps.newConcurrentMap();
 
         final List<ObjectSpecification> cachedSpecifications = Lists.newArrayList();
         while(true) {
@@ -97,8 +97,8 @@ class SpecificationCacheDefault {
     }
 
     void internalInit(final Map<ObjectSpecId, ObjectSpecification> specById) {
-        final Map<ObjectSpecId, String> classNameBySpecId = Maps.newHashMap();
-        final Map<String, ObjectSpecification> specByClassName = Maps.newHashMap();
+        final Map<ObjectSpecId, String> classNameBySpecId = Maps.newConcurrentMap();
+        final Map<String, ObjectSpecification> specByClassName = Maps.newConcurrentMap();
         for (ObjectSpecId objectSpecId : specById.keySet()) {
             final ObjectSpecification objectSpec = specById.get(objectSpecId);
             final String className = objectSpec.getCorrespondingClass().getName();
