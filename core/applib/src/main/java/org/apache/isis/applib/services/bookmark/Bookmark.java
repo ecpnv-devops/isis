@@ -20,16 +20,21 @@ package org.apache.isis.applib.services.bookmark;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.Optional;
+import java.util.StringTokenizer;
 
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 
 import org.apache.isis.applib.annotation.Value;
 import org.apache.isis.schema.common.v1.BookmarkObjectState;
 import org.apache.isis.schema.common.v1.OidDto;
 
+import lombok.NonNull;
+
 /**
  * String representation of any persistent object managed by the framework.
- * 
+ *
  * <p>
  * Analogous to the <tt>RootOid</tt>.
  */
@@ -153,13 +158,13 @@ public class Bookmark implements Serializable {
     public String getObjectType() {
         return objectType;
     }
-    
+
     public String getIdentifier() {
         return identifier;
     }
-    
-    
-    
+
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -193,7 +198,7 @@ public class Bookmark implements Serializable {
 
     /**
      * The canonical form of the {@link Bookmark}, that is &quot;{@link #getObjectType() objectType}{@value #SEPARATOR}{@link #getIdentifier()}&quot;.
-     * 
+     *
      * <p>
      * This is parseable by the {@link #Bookmark(String) string constructor}.
      */
@@ -215,9 +220,43 @@ public class Bookmark implements Serializable {
             public static final int MAX_LEN = 2000;
 
             private Meta() {}
-
         }
+    }
 
+    public static Optional<Bookmark> parse(final String str) {
+        if (Strings.isNullOrEmpty(str)) {
+            return Optional.empty();
+        } else {
+            StringTokenizer tokenizer = new StringTokenizer(str, ":");
+            int tokenCount = tokenizer.countTokens();
+            if (tokenCount != 1) {
+                if (tokenCount == 2) {
+                    return Optional.of(forLogicalTypeNameAndIdentifier(tokenizer.nextToken(), tokenizer.nextToken()));
+                } else {
+                    return tokenCount > 2 ? Optional.of(forLogicalTypeNameAndIdentifier(tokenizer.nextToken(), tokenizer.nextToken("").substring(1))) : Optional.empty();
+                }
+            } else {
+                return !str.endsWith(":") && !str.startsWith(":") ? Optional.of(emptyForLogicalTypeName(tokenizer.nextToken())) : Optional.empty();
+            }
+        }
+    }
+
+    static Bookmark emptyForLogicalTypeName(final String logicalTypeName) {
+        if (logicalTypeName == null) {
+            throw new NullPointerException("logicalTypeName is marked non-null but is null");
+        } else {
+            return new Bookmark(logicalTypeName, null);
+        }
+    }
+
+    static Bookmark forLogicalTypeNameAndIdentifier(final String logicalTypeName, final String identifier) {
+        if (logicalTypeName == null) {
+            throw new NullPointerException("logicalTypeName is marked non-null but is null");
+        } else if (identifier == null) {
+            throw new NullPointerException("identifier is marked non-null but is null");
+        } else {
+            return new Bookmark(logicalTypeName, identifier);
+        }
     }
 
 }
