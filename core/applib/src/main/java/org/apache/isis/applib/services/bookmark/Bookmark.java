@@ -159,6 +159,13 @@ public class Bookmark implements Serializable {
         return objectType;
     }
 
+    /**
+     * Forward compatibility with v2
+     */
+    public String getLogicalTypeName() {
+        return getObjectType();
+    }
+
     public String getIdentifier() {
         return identifier;
     }
@@ -223,6 +230,9 @@ public class Bookmark implements Serializable {
         }
     }
 
+    /**
+     * Forward compatibility with v2
+     */
     public static Optional<Bookmark> parse(final String str) {
         if (Strings.isNullOrEmpty(str)) {
             return Optional.empty();
@@ -241,21 +251,27 @@ public class Bookmark implements Serializable {
         }
     }
 
-    static Bookmark emptyForLogicalTypeName(final String logicalTypeName) {
-        if (logicalTypeName == null) {
-            throw new NullPointerException("logicalTypeName is marked non-null but is null");
-        } else {
-            return new Bookmark(logicalTypeName, null);
-        }
-    }
-
-    static Bookmark forLogicalTypeNameAndIdentifier(final String logicalTypeName, final String identifier) {
+    /**
+     * Forward compatibility with v2
+     */
+    public static Bookmark forLogicalTypeNameAndIdentifier(final String logicalTypeName, final String identifier) {
         if (logicalTypeName == null) {
             throw new NullPointerException("logicalTypeName is marked non-null but is null");
         } else if (identifier == null) {
             throw new NullPointerException("identifier is marked non-null but is null");
         } else {
             return new Bookmark(logicalTypeName, identifier);
+        }
+    }
+
+    /**
+     * Forward compatibility with v2
+     */
+    static Bookmark emptyForLogicalTypeName(final String logicalTypeName) {
+        if (logicalTypeName == null) {
+            throw new NullPointerException("logicalTypeName is marked non-null but is null");
+        } else {
+            return new Bookmark(logicalTypeName, null);
         }
     }
 
