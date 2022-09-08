@@ -135,9 +135,13 @@ public @interface Action {
     /**
      * How the {@link org.apache.isis.applib.services.command.Command Command} object provided by the
      * {@link org.apache.isis.applib.services.command.CommandContext CommandContext} domain service should be persisted.
+     *
+     * @Deprecated replaced by commandPublishing
      */
     @Deprecated
     CommandPersistence commandPersistence() default CommandPersistence.PERSISTED;
+
+    Publishing commandPublishing() default Publishing.ENABLED;
 
     /**
      * How the command/action should be executed.
@@ -178,9 +182,13 @@ public @interface Action {
      * Requires that an implementation of the {@link org.apache.isis.applib.services.publish.PublishingService}
      * or {@link org.apache.isis.applib.services.publish.PublisherService} is registered with the framework.
      * </p>
+     *
+     * @Deprecated and replaced by executionPublishing()
      */
     @Deprecated
     Publishing publishing() default Publishing.AS_CONFIGURED;
+
+    Publishing executionPublishing() default Publishing.AS_CONFIGURED;
 
     /**
      * @deprecated - not supported by {@link PublisherService}.
@@ -232,6 +240,7 @@ public @interface Action {
      *     and any collection parameter defaults can be specified using checkboxes
      *     (in the Wicket UI, at least).
      * </p>
+     * @Deprecated use ActionLayout.associateWith or Action.choicesFrom instead
      */
     @Deprecated
     String associateWith() default "";
@@ -247,6 +256,8 @@ public @interface Action {
      * <p>
      *     For example <code>@Action(associateWith="items", associateWithSequence="2.1")</code>
      * </p>
+     *
+     * @Deprecated use ActionLayout.sequence instead
      */
     @Deprecated
     String associateWithSequence() default "1";

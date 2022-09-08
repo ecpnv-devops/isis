@@ -35,7 +35,11 @@ public class PublishedActionFacetForActionAnnotation extends PublishedActionFace
             final IsisConfiguration configuration,
             final FacetHolder holder) {
 
-        final Publishing publishing = action != null ? action.publishing() : Publishing.AS_CONFIGURED;
+        Publishing publishing = Publishing.AS_CONFIGURED;
+        if(action != null){
+            publishing = action.executionPublishing() == Publishing.AS_CONFIGURED
+                    ? action.publishing() : action.executionPublishing();
+        };
 
         switch (publishing) {
             case AS_CONFIGURED:

@@ -44,10 +44,22 @@ public class CommandFacetForActionAnnotation extends CommandFacetAbstract {
                 action != null
                     ? action.command()
                     : CommandReification.AS_CONFIGURED;
-        CommandPersistence commandPersistence =
-                action != null
-                    ? action.commandPersistence()
-                    : CommandPersistence.PERSISTED;
+        CommandPersistence commandPersistence = CommandPersistence.PERSISTED;
+        if(action!=null) {
+            switch (action.commandPublishing()) {
+                // v2
+                case DISABLED:
+                    commandPersistence = CommandPersistence.NOT_PERSISTED;
+                    break;
+                case NOT_SPECIFIED:
+                case AS_CONFIGURED:
+                    commandPersistence = CommandPersistence.IF_HINTED;
+                    break;
+                default:
+                    // v1
+                    commandPersistence = action.commandPersistence();
+            }
+        }
         final CommandExecuteIn commandExecuteIn =
                 action != null
                     ? action.commandExecuteIn()
