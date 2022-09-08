@@ -337,9 +337,8 @@ public class DomainObjectAnnotationFacetFactory extends FacetFactoryAbstract
                 ObjectSpecIdFacetFromObjectTypeAnnotation.create(annotation, facetHolder));
 
         // else check from @DomainObject(objectType=...)
-        final DomainObject domainObject = Annotations.getAnnotation(cls, DomainObject.class);
         if(facet == null) {
-            facet = ObjectSpecIdFacetForDomainObjectAnnotation.create(domainObject, facetHolder);
+            facet = ObjectSpecIdFacetForDomainObjectAnnotation.create(cls, facetHolder);
         }
 
         // else check for @PersistenceCapable(schema=...)

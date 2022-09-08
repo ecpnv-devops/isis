@@ -22,6 +22,9 @@ package org.apache.isis.core.metamodel.services;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.inject.Named;
+import javax.naming.Name;
+
 import com.google.common.base.Strings;
 
 import org.apache.isis.applib.annotation.DomainService;
@@ -63,7 +66,12 @@ public final class ServiceUtil {
     private static String serviceTypeOf(final Class<?> serviceClass) {
         final DomainService domainService = serviceClass.getAnnotation(DomainService.class);
         if(domainService != null) {
-            // First look at the annotation for v2.
+            // First look at the annotation for v2 - @Named
+            final Named named = serviceClass.getAnnotation(Named.class);
+            if(named!=null && !Strings.isNullOrEmpty(named.value())){
+                return named.value();
+            }
+            // Second look at the annotation for v2 - logicalTypeName()
             String serviceType = domainService.logicalTypeName();
             if(Strings.isNullOrEmpty(serviceType)) {
                 serviceType = domainService.objectType();
