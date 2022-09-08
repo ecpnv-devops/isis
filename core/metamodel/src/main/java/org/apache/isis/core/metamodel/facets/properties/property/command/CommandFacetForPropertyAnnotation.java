@@ -37,25 +37,25 @@ public class CommandFacetForPropertyAnnotation extends CommandFacetAbstract {
             final FacetHolder holder,
             final ServicesInjector servicesInjector) {
 
-        CommandReification commandReification = CommandReification.AS_CONFIGURED;
+        CommandReification commandReification = property!=null ? property.command() : CommandReification.AS_CONFIGURED;
+        CommandPersistence commandPersistence = CommandPersistence.PERSISTED;
         if(property!=null) {
             // Check for v2 commandPublishing
             switch (property.commandPublishing()) {
                 case ENABLED:
-                    commandReification = CommandReification.ENABLED;
+                    commandPersistence = CommandPersistence.PERSISTED;
                     break;
                 case DISABLED:
-                    commandReification = CommandReification.DISABLED;
+                    commandPersistence = CommandPersistence.NOT_PERSISTED;
                     break;
                 case AS_CONFIGURED:
-                    commandReification = CommandReification.AS_CONFIGURED;
+                    commandPersistence = CommandPersistence.IF_HINTED;
                     break;
                 default:
                     // do v1
-                    commandReification = property.command();
+                    commandPersistence = property.commandPersistence();
             }
         }
-        final CommandPersistence commandPersistence = property != null ? property.commandPersistence() : CommandPersistence.PERSISTED;
         final CommandExecuteIn commandExecuteIn = property != null? property.commandExecuteIn() :  CommandExecuteIn.FOREGROUND;
         final Class<? extends CommandDtoProcessor> processorClass =
                 property != null ? property.commandDtoProcessor() : null;

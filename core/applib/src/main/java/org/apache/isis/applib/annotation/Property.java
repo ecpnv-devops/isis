@@ -122,11 +122,13 @@ public @interface Property {
      * @see Property#commandDtoProcessor()
      */
     Publishing commandPublishing()
-            default Publishing.NOT_SPECIFIED;
+            default Publishing.ENABLED;
 
     /**
      * How the {@link org.apache.isis.applib.services.command.Command Command} object provided by the
      * {@link org.apache.isis.applib.services.command.CommandContext CommandContext} domain service should be persisted.
+     *
+     * @Deprecated replaced by commandPublishing
      */
     @Deprecated
     CommandPersistence commandPersistence() default CommandPersistence.PERSISTED;
