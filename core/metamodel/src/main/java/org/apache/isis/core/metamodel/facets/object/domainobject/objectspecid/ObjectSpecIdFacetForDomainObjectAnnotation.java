@@ -19,29 +19,40 @@
 
 package org.apache.isis.core.metamodel.facets.object.domainobject.objectspecid;
 
+import javax.inject.Named;
+
 import com.google.common.base.Strings;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.core.metamodel.facetapi.FacetHolder;
+import org.apache.isis.core.metamodel.facets.Annotations;
 import org.apache.isis.core.metamodel.facets.object.objectspecid.ObjectSpecIdFacet;
 import org.apache.isis.core.metamodel.facets.object.objectspecid.ObjectSpecIdFacetAbstract;
 
 public class ObjectSpecIdFacetForDomainObjectAnnotation extends ObjectSpecIdFacetAbstract {
 
     public static ObjectSpecIdFacet create(
-            final DomainObject domainObject,
+            final Class<?> domainObjectClass,
             final FacetHolder holder) {
 
+        final DomainObject domainObject = Annotations.getAnnotation(domainObjectClass, DomainObject.class);
         if(domainObject == null) {
             return null;
         }
 
-        // Check first for the new v2 attribute
-        String objectType = domainObject.logicalTypeName();
-        if(Strings.isNullOrEmpty(objectType)) {
-            // Fall back to old.
-            objectType = domainObject.objectType();
-            if(Strings.isNullOrEmpty(objectType)) {
-                return null;
+        // First look at the annotation for v2 - @Named
+        final Named named = domainObjectClass.getAnnotation(Named.class);
+        String objectType = null;
+        if(named!=null && !Strings.isNullOrEmpty(named.value())){
+            objectType = named.value();
+        }else {
+            // Second check for the old v2 attribute
+            objectType = domainObject.logicalTypeName();
+            if (Strings.isNullOrEmpty(objectType)) {
+                // Fall back to old.
+                objectType = domainObject.objectType();
+                if (Strings.isNullOrEmpty(objectType)) {
+                    return null;
+                }
             }
         }
         return new ObjectSpecIdFacetForDomainObjectAnnotation(objectType, holder);
