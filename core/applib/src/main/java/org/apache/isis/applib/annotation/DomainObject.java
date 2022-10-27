@@ -66,6 +66,8 @@ public @interface DomainObject {
      * Requires that an implementation of the {@link org.apache.isis.applib.services.publish.PublishingService} is
      * registered with the framework.
      * </p>
+     *
+     * @Deprecated replaced with entityChangePublishing
      */
     @Deprecated
     Publishing publishing() default Publishing.AS_CONFIGURED;
