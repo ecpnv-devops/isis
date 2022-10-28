@@ -32,6 +32,11 @@ public class MetaModelValidatorForMixinTypes extends MetaModelValidatorForValida
     }
 
     public boolean ensureMixinType(final Class<?> candidateMixinType) {
+        if (candidateMixinType.isAnnotation()) {
+            // backward support for v2 use of e.g. `@Property` (which is meta-annotated with `@DomainObject(nature=MIXIN)`
+            // to be used itself as a meta-annotation of another annotation (eg `@HasInteraction.InteractionId`)
+            return true;
+        }
         boolean mixinType = has1ArgConstructor(candidateMixinType);
         if (mixinType) {
             return true;
