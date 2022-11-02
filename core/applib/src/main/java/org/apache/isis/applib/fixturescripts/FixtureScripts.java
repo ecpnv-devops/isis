@@ -463,6 +463,15 @@ public abstract class FixtureScripts extends AbstractService {
         return (T) runBuilder(fixtureScript);
     }
 
+    @Programmatic
+    public void runPersonas(final PersonaWithBuilderScript... personas) {
+        if(personas!=null){
+            for(PersonaWithBuilderScript persona:personas){
+                this.runPersona(persona);
+            }
+        }
+    }
+
     /**
      * Runs the builderScript within its own transactional boundary.
      * @param <T>
