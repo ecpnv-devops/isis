@@ -29,7 +29,7 @@
 
     <groupId>org.apache.isis.core</groupId>
     <artifactId>isis</artifactId>
-    <version>${revision}</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -46,8 +46,6 @@
     <inceptionYear>2010</inceptionYear>
 
     <properties>
-        <revision>1.0.0-SNAPSHOT</revision>
-        <isis.version>${revision}</isis.version>
 
         <isis.skipTests>false</isis.skipTests>
         <maven.test.skip>${isis.skipTests}</maven.test.skip>

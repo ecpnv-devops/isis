@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.isis.core</groupId>
         <artifactId>isis</artifactId>
-        <version>${revision}</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>org.apache.isis.tool</groupId>
@@ -110,14 +110,14 @@
             <artifactId>isis-core-runtime</artifactId>
         </dependency>
 
-        <!-- 
+        <!--
         the plethora of exclusions in the following dependencies
         are to ensure dependency convergence.
-        
+
         In some cases, what would have been a transitive dependency
         is added as a direct dependency in order that its divergent dependency
         can be excluded.
-        
+
         It's all a bit of a pig's ear...
         -->
 

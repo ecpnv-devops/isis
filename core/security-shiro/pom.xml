@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License.  You may obtain a copy of the License at
-  
+
          http://www.apache.org/licenses/LICENSE-2.0
-         
+
   Unless required by applicable law or agreed to in writing,
   software distributed under the License is distributed on an
   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.isis.core</groupId>
         <artifactId>isis</artifactId>
-    <version>${revision}</version>
+    <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>isis-core-security-shiro</artifactId>
@@ -46,8 +46,8 @@
                     <version>0.10</version>
 	                <configuration>
 	                    <excludes>
-	                    	<!-- 
-	                    	overriding inherited excludes from oia.core:isis 
+	                    	<!--
+	                    	overriding inherited excludes from oia.core:isis
 	                    	with a more specific set for this component
 	                    	 -->
 	                        <exclude>**/target/**</exclude>
@@ -69,7 +69,7 @@
             <dependency>
                 <groupId>org.apache.isis.core</groupId>
                 <artifactId>isis-core-security-shiro</artifactId>
-                <version>${revision}</version>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
     	</dependencies>
     </dependencyManagement>
@@ -79,7 +79,7 @@
             <groupId>org.apache.isis.core</groupId>
             <artifactId>isis-core-runtime</artifactId>
         </dependency>
-	
+
         <dependency>
             <groupId>org.apache.isis.core</groupId>
             <artifactId>isis-core-runtime</artifactId>
@@ -91,7 +91,7 @@
             <artifactId>isis-core-unittestsupport</artifactId>
             <scope>test</scope>
         </dependency>
-	
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
