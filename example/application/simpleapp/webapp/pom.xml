@@ -144,7 +144,7 @@
                     <plugin>
                         <groupId>org.apache.isis.tool</groupId>
                         <artifactId>isis-maven-plugin</artifactId>
-                        <version>${isis.version}</version>
+                        <version>1.0.0-SNAPSHOT</version>
                         <executions>
                             <execution>
                                 <phase>package</phase>
