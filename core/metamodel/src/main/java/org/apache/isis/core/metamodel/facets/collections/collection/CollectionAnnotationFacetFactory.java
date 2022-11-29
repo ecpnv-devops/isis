@@ -83,6 +83,7 @@ import org.apache.isis.core.metamodel.facets.members.disabled.DisabledFacet;
 import org.apache.isis.core.metamodel.facets.object.domainobject.domainevents.CollectionDomainEventDefaultFacetForDomainObjectAnnotation;
 import org.apache.isis.core.metamodel.facets.propcoll.accessor.PropertyOrCollectionAccessorFacet;
 import org.apache.isis.core.metamodel.facets.propcoll.notpersisted.NotPersistedFacet;
+import org.apache.isis.core.metamodel.facets.properties.property.modify.PropertyDomainEventFacetDefault;
 import org.apache.isis.core.metamodel.services.ServicesInjector;
 import org.apache.isis.core.metamodel.spec.ObjectSpecification;
 import org.apache.isis.core.metamodel.specloader.CollectionUtils;
@@ -119,7 +120,8 @@ public class CollectionAnnotationFacetFactory extends FacetFactoryAbstract imple
     // Added to support v2
     void inferIntentWhenOnTypeLevel(final ProcessMethodContext processMethodContext) {
         // Verify that @Collection is on type and method to process == coll
-        final Annotation colAnno=processMethodContext.getFacetHolder().getOwningType().getAnnotation(Collection.class);
+        FacetedMethod facetedMethod = processMethodContext.getFacetHolder();
+        final Collection colAnno= facetedMethod.getOwningType().getAnnotation(Collection.class);
         if(colAnno==null || !processMethodContext.getMethod().getName().equals(Collection.MIXIN_METHOD)) {
             return; // no @Collection found neither type nor method
         }
@@ -127,10 +129,12 @@ public class CollectionAnnotationFacetFactory extends FacetFactoryAbstract imple
         //[1998] if @Collection detected on method or type level infer:
         //@Action(semantics=SAFE)
         //@ActionLayout(contributed=ASSOCIATION) ... it seems, is already allowed for mixins
-        final FacetedMethod facetedMethod = processMethodContext.getFacetHolder();
         FacetUtil.addFacet(new ActionSemanticsFacetAbstract(ActionSemantics.Of.SAFE, facetedMethod) {});
         FacetUtil.addFacet(new NotContributedFacetForLayoutProperties(NotContributed.As.from(Contributed.AS_ASSOCIATION),
-                processMethodContext.getFacetHolder()));
+                facetedMethod));
+
+        FacetUtil.addFacet(new CollectionDomainEventFacetDefault(colAnno.domainEvent(), servicesInjector, getSpecificationLoader(), facetedMethod));
+
     }
 
     void processModify(final ProcessMethodContext processMethodContext) {
