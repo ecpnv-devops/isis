@@ -30,7 +30,7 @@ import java.util.Comparator;
  * Layout hints for collections.
  */
 @Inherited
-@Target({ ElementType.METHOD, ElementType.FIELD })
+@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.TYPE  })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CollectionLayout {
 
@@ -124,7 +124,7 @@ public @interface CollectionLayout {
      * <p>
      * There is some similarity between this concept and that of eager-loading as supported by some object stores.
      * </p>
-     * 
+     *
      * @deprecated - use {@link #defaultView()} set to &quot;table&quot; instead.
      */
     @Deprecated // In preparation for v2

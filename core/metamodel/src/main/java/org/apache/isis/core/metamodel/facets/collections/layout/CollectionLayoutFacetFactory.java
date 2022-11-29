@@ -19,6 +19,7 @@
 package org.apache.isis.core.metamodel.facets.collections.layout;
 
 
+import java.lang.reflect.Method;
 import java.util.Properties;
 import org.apache.isis.applib.annotation.CollectionLayout;
 import org.apache.isis.applib.services.i18n.TranslationService;
@@ -28,6 +29,7 @@ import org.apache.isis.core.metamodel.facetapi.FeatureType;
 import org.apache.isis.core.metamodel.facets.Annotations;
 import org.apache.isis.core.metamodel.facets.ContributeeMemberFacetFactory;
 import org.apache.isis.core.metamodel.facets.FacetFactoryAbstract;
+import org.apache.isis.core.metamodel.facets.FacetedMethod;
 import org.apache.isis.core.metamodel.facets.all.describedas.DescribedAsFacet;
 import org.apache.isis.core.metamodel.facets.all.hide.HiddenFacet;
 import org.apache.isis.core.metamodel.facets.all.named.NamedFacet;
@@ -49,14 +51,9 @@ public class CollectionLayoutFacetFactory extends FacetFactoryAbstract implement
     @Override
     public void process(final ProcessMethodContext processMethodContext) {
 
-        final FacetHolder holder = processMethodContext.getFacetHolder();
-
-        Properties properties = processMethodContext.metadataProperties("collectionLayout");
-        if(properties == null) {
-            // alternate key
-            properties = processMethodContext.metadataProperties("layout");
-        }
-        final CollectionLayout collectionLayout = Annotations.getAnnotation(processMethodContext.getMethod(), CollectionLayout.class);
+        final FacetHolder holder = facetHolderFrom(processMethodContext);
+        final Properties properties = metadataPropertiesFrom(processMethodContext);
+        final CollectionLayout collectionLayout = collectionLayoutFrom(processMethodContext);
 
 
         // cssClass
@@ -89,7 +86,7 @@ public class CollectionLayoutFacetFactory extends FacetFactoryAbstract implement
             defaultViewFacet = DefaultViewFacetForCollectionLayoutAnnotation.create(collectionLayout, getConfiguration(), holder);
         }
         FacetUtil.addFacet(defaultViewFacet);
-        
+
 
         // named
         NamedFacet namedFacet = NamedFacetOnCollectionFromLayoutProperties.create(properties, holder);
@@ -181,6 +178,28 @@ public class CollectionLayoutFacetFactory extends FacetFactoryAbstract implement
         FacetUtil.addFacet(sortedByFacet);
 
 
+    }
+
+    private static FacetedMethod facetHolderFrom(ProcessMethodContext processMethodContext) {
+        return processMethodContext.getFacetHolder();
+    }
+
+    private static CollectionLayout collectionLayoutFrom(ProcessMethodContext processMethodContext) {
+        final Method method = processMethodContext.getMethod();
+        CollectionLayout collectionLayout = Annotations.getAnnotation(method, CollectionLayout.class);
+        if(collectionLayout != null) {
+            return collectionLayout;
+        }
+        return Annotations.getAnnotation(processMethodContext.getFacetHolder().getOwningType(), CollectionLayout.class);
+    }
+
+    private static Properties metadataPropertiesFrom(ProcessMethodContext processMethodContext) {
+        Properties properties = processMethodContext.metadataProperties("collectionLayout");
+        if(properties == null) {
+            // alternate key
+            properties = processMethodContext.metadataProperties("layout");
+        }
+        return properties;
     }
 
 
