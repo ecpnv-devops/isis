@@ -22,6 +22,8 @@ package org.apache.isis.core.metamodel.facets.properties.propertylayout;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
+import org.datanucleus.util.StringUtils;
+
 import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.services.i18n.TranslationService;
 import org.apache.isis.core.metamodel.facetapi.FacetHolder;
@@ -42,7 +44,6 @@ import org.apache.isis.core.metamodel.facets.objectvalue.multiline.MultiLineFace
 import org.apache.isis.core.metamodel.facets.objectvalue.renderedadjusted.RenderedAdjustedFacet;
 import org.apache.isis.core.metamodel.facets.objectvalue.typicallen.TypicalLengthFacet;
 import org.apache.isis.core.metamodel.facets.properties.renderunchanged.UnchangingFacet;
-import org.datanucleus.util.StringUtils;
 
 public class PropertyLayoutFacetFactory extends FacetFactoryAbstract implements ContributeeMemberFacetFactory {
 
@@ -246,6 +247,20 @@ public class PropertyLayoutFacetFactory extends FacetFactoryAbstract implements 
 
     }
 
+    FacetedMethod facetHolderFrom(final ProcessMethodContext processMethodContext) {
+        return processMethodContext.getFacetHolder();
+    }
+
+    PropertyLayout propertyLayoutAnnotationFrom(final ProcessMethodContext processMethodContext) {
+        final Method method = processMethodContext.getMethod();
+        PropertyLayout propertyLayout = Annotations.getAnnotation(method, PropertyLayout.class);
+        if(propertyLayout != null) {
+            return propertyLayout;
+        }
+        return Annotations.getAnnotation(processMethodContext.getFacetHolder().getOwningType(), PropertyLayout.class);
+    }
+
+
     Properties metadataPropertiesFrom(final ProcessMethodContext processMethodContext) {
         Properties properties = processMethodContext.metadataProperties("propertyLayout");
         if(properties == null) {
@@ -254,16 +269,6 @@ public class PropertyLayoutFacetFactory extends FacetFactoryAbstract implements 
         }
         return properties;
     }
-
-    FacetedMethod facetHolderFrom(final ProcessMethodContext processMethodContext) {
-        return processMethodContext.getFacetHolder();
-    }
-
-    PropertyLayout propertyLayoutAnnotationFrom(final ProcessMethodContext processMethodContext) {
-        final Method method = processMethodContext.getMethod();
-        return Annotations.getAnnotation(method, PropertyLayout.class);
-    }
-
 
     Properties metadataPropertiesFrom(final ProcessContributeeMemberContext processMemberContext) {
         Properties properties = processMemberContext.metadataProperties("propertyLayout");

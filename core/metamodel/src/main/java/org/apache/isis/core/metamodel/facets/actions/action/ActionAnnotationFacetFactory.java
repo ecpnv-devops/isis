@@ -28,10 +28,13 @@ import org.apache.isis.applib.annotation.ActionInteraction;
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.Bulk;
 import org.apache.isis.applib.annotation.Command;
+import org.apache.isis.applib.annotation.Contributed;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Idempotent;
+import org.apache.isis.applib.annotation.NotContributed;
 import org.apache.isis.applib.annotation.PostsActionInvokedEvent;
+import org.apache.isis.applib.annotation.Property;
 import org.apache.isis.applib.annotation.Prototype;
 import org.apache.isis.applib.annotation.PublishedAction;
 import org.apache.isis.applib.annotation.QueryOnly;
@@ -79,13 +82,17 @@ import org.apache.isis.core.metamodel.facets.actions.action.typeof.TypeOfFacetFo
 import org.apache.isis.core.metamodel.facets.actions.action.typeof.TypeOfFacetOnActionForTypeOfAnnotation;
 import org.apache.isis.core.metamodel.facets.actions.bulk.BulkFacet;
 import org.apache.isis.core.metamodel.facets.actions.command.CommandFacet;
+import org.apache.isis.core.metamodel.facets.actions.layout.NotContributedFacetForLayoutProperties;
 import org.apache.isis.core.metamodel.facets.actions.prototype.PrototypeFacet;
 import org.apache.isis.core.metamodel.facets.actions.publish.PublishedActionFacet;
 import org.apache.isis.core.metamodel.facets.actions.semantics.ActionSemanticsFacet;
+import org.apache.isis.core.metamodel.facets.actions.semantics.ActionSemanticsFacetAbstract;
 import org.apache.isis.core.metamodel.facets.all.hide.HiddenFacet;
 import org.apache.isis.core.metamodel.facets.members.disabled.DisabledFacet;
 import org.apache.isis.core.metamodel.facets.members.order.annotprop.MemberOrderFacetForActionAnnotation;
 import org.apache.isis.core.metamodel.facets.object.domainobject.domainevents.ActionDomainEventDefaultFacetForDomainObjectAnnotation;
+import org.apache.isis.core.metamodel.facets.propcoll.accessor.PropertyOrCollectionAccessorFacet;
+import org.apache.isis.core.metamodel.facets.properties.property.modify.PropertyDomainEventFacetDefault;
 import org.apache.isis.core.metamodel.services.ServicesInjector;
 import org.apache.isis.core.metamodel.spec.ObjectSpecification;
 import org.apache.isis.core.metamodel.specloader.CollectionUtils;
@@ -118,6 +125,8 @@ public class ActionAnnotationFacetFactory extends FacetFactoryAbstract
     @Override
     public void process(final ProcessMethodContext processMethodContext) {
 
+        inferIntentWhenOnTypeLevel(processMethodContext);
+
         processInvocation(processMethodContext);
         processHidden(processMethodContext);
         processDisabled(processMethodContext);
@@ -134,6 +143,19 @@ public class ActionAnnotationFacetFactory extends FacetFactoryAbstract
         processTypeOf(processMethodContext);
         processAssociateWith(processMethodContext);
     }
+
+    void inferIntentWhenOnTypeLevel(final ProcessMethodContext processMethodContext) {
+
+        // Verify that @Action is on type and method to process == "action"
+        final FacetedMethod facetedMethod = processMethodContext.getFacetHolder();
+        final Action actAnno= facetedMethod.getOwningType().getAnnotation(Action.class);
+        if(actAnno==null || !processMethodContext.getMethod().getName().equals(Action.MIXIN_METHOD)) {
+            return; // no @Action found neither type nor method
+        }
+
+        FacetUtil.addFacet(new ActionDomainEventFacetDefault(actAnno.domainEvent(), servicesInjector, getSpecificationLoader(), facetedMethod));
+    }
+
 
     void processInvocation(final ProcessMethodContext processMethodContext) {
 

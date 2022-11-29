@@ -131,19 +131,24 @@ public class PropertyAnnotationFacetFactory extends FacetFactoryAbstract impleme
     }
 
     void inferIntentWhenOnTypeLevel(final ProcessMethodContext processMethodContext) {
-        // Verify that @Collection is on type and method to process == coll
-        final Annotation colAnno=processMethodContext.getFacetHolder().getOwningType().getAnnotation(Property.class);
-        if(colAnno==null || !processMethodContext.getMethod().getName().equals(Property.MIXIN_METHOD)) {
-            return; // no @Collection found neither type nor method
+
+        // Verify that @Property is on type and method to process == "prop"
+        final FacetedMethod facetedMethod = processMethodContext.getFacetHolder();
+        final Property propAnno= facetedMethod.getOwningType().getAnnotation(Property.class);
+        if(propAnno==null || !processMethodContext.getMethod().getName().equals(Property.MIXIN_METHOD)) {
+            return; // no @Property found neither type nor method
         }
 
-        //[1998] if @Collection detected on method or type level infer:
+        //[1998] if @Property detected on method or type level infer:
         //@Action(semantics=SAFE)
         //@ActionLayout(contributed=ASSOCIATION) ... it seems, is already allowed for mixins
-        final FacetedMethod facetedMethod = processMethodContext.getFacetHolder();
         FacetUtil.addFacet(new ActionSemanticsFacetAbstract(ActionSemantics.Of.SAFE, facetedMethod) {});
         FacetUtil.addFacet(new NotContributedFacetForLayoutProperties(NotContributed.As.from(Contributed.AS_ASSOCIATION),
-                processMethodContext.getFacetHolder()));
+                facetedMethod));
+
+        final PropertyOrCollectionAccessorFacet accessorFacet = facetedMethod.getFacet(PropertyOrCollectionAccessorFacet.class);
+
+        FacetUtil.addFacet(new PropertyDomainEventFacetDefault(propAnno.domainEvent(), accessorFacet, servicesInjector, getSpecificationLoader(), facetedMethod));
     }
 
     void processModify(final ProcessMethodContext processMethodContext) {

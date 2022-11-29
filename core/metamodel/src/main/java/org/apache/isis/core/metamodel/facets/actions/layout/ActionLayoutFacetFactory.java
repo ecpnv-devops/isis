@@ -18,6 +18,7 @@
  */
 package org.apache.isis.core.metamodel.facets.actions.layout;
 
+import java.lang.reflect.Method;
 import java.util.Properties;
 
 import org.apache.isis.applib.annotation.ActionLayout;
@@ -28,6 +29,7 @@ import org.apache.isis.core.metamodel.facetapi.FeatureType;
 import org.apache.isis.core.metamodel.facets.Annotations;
 import org.apache.isis.core.metamodel.facets.ContributeeMemberFacetFactory;
 import org.apache.isis.core.metamodel.facets.FacetFactoryAbstract;
+import org.apache.isis.core.metamodel.facets.FacetedMethod;
 import org.apache.isis.core.metamodel.facets.actions.notcontributed.NotContributedFacet;
 import org.apache.isis.core.metamodel.facets.actions.position.ActionPositionFacet;
 import org.apache.isis.core.metamodel.facets.actions.position.ActionPositionFacetFallback;
@@ -54,14 +56,9 @@ public class ActionLayoutFacetFactory extends FacetFactoryAbstract implements Co
     @Override
     public void process(final ProcessMethodContext processMethodContext) {
 
-        final FacetHolder holder = processMethodContext.getFacetHolder();
-        Properties properties = processMethodContext.metadataProperties("actionLayout");
-
-        if(properties == null) {
-            // alternate key
-            properties = processMethodContext.metadataProperties("layout");
-        }
-        final ActionLayout actionLayout = Annotations.getAnnotation(processMethodContext.getMethod(), ActionLayout.class);
+        final FacetHolder holder = facetHolderFrom(processMethodContext);
+        final Properties properties = metadataPropertiesFrom(processMethodContext);
+        final ActionLayout actionLayout = actionLayoutFrom(processMethodContext);
 
 
         // bookmarkable
@@ -213,6 +210,29 @@ public class ActionLayoutFacetFactory extends FacetFactoryAbstract implements Co
         }
         FacetUtil.addFacet(actionPositionFacet);
 
+    }
+
+    private static FacetedMethod facetHolderFrom(ProcessMethodContext processMethodContext) {
+        return processMethodContext.getFacetHolder();
+    }
+
+    private static ActionLayout actionLayoutFrom(ProcessMethodContext processMethodContext) {
+        final Method method = processMethodContext.getMethod();
+        ActionLayout actionLayout = Annotations.getAnnotation(method, ActionLayout.class);
+        if (actionLayout != null) {
+            return actionLayout;
+        }
+        return Annotations.getAnnotation(processMethodContext.getFacetHolder().getOwningType(), ActionLayout.class);
+    }
+
+    private static Properties metadataPropertiesFrom(ProcessMethodContext processMethodContext) {
+        Properties properties = processMethodContext.metadataProperties("actionLayout");
+
+        if(properties == null) {
+            // alternate key
+            properties = processMethodContext.metadataProperties("layout");
+        }
+        return properties;
     }
 
 }
