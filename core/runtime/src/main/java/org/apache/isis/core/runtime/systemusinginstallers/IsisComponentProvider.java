@@ -19,6 +19,7 @@
 
 package org.apache.isis.core.runtime.systemusinginstallers;
 
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -214,7 +215,9 @@ public abstract class IsisComponentProvider {
                     public boolean apply(@Nullable final Class<?> input) {
                         if(input == null) { return false; }
                         final DomainObject annotation = Annotations.getAnnotation(input, DomainObject.class);
-                        return annotation != null && annotation.nature() == Nature.MIXIN;
+                        return !Modifier.isAbstract(input.getModifiers())
+                                && annotation != null
+                                && annotation.nature() == Nature.MIXIN;
                     }
                 }))
         );
