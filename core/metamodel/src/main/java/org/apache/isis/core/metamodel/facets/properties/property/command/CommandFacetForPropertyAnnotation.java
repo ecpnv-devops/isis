@@ -37,26 +37,35 @@ public class CommandFacetForPropertyAnnotation extends CommandFacetAbstract {
             final FacetHolder holder,
             final ServicesInjector servicesInjector) {
 
-        CommandReification commandReification = property!=null ? property.command() : CommandReification.AS_CONFIGURED;
+        CommandReification commandReification = CommandReification.AS_CONFIGURED;
         CommandPersistence commandPersistence = CommandPersistence.PERSISTED;
+        CommandExecuteIn commandExecuteIn = CommandExecuteIn.FOREGROUND;  // in Estatio, arch rule enforces that we BACKGROUND is disallowed, so this is safe.
+
         if(property!=null) {
             // Check for v2 commandPublishing
             switch (property.commandPublishing()) {
                 case ENABLED:
+                    commandReification = CommandReification.ENABLED;
                     commandPersistence = CommandPersistence.PERSISTED;
+                    commandExecuteIn = CommandExecuteIn.FOREGROUND; // in Estatio, arch rule enforces that we BACKGROUND is disallowed, so this is safe.
                     break;
                 case DISABLED:
+                    commandReification = CommandReification.DISABLED;
                     commandPersistence = CommandPersistence.NOT_PERSISTED;
+                    commandExecuteIn = CommandExecuteIn.FOREGROUND; // in Estatio, arch rule enforces that we BACKGROUND is disallowed, so this is safe.
                     break;
                 case AS_CONFIGURED:
-                    commandPersistence = CommandPersistence.IF_HINTED;
+                    commandReification = CommandReification.AS_CONFIGURED;
+                    commandPersistence = CommandPersistence.NOT_PERSISTED;  // unimportant for Estatio as the key 'isis.services.command.properties' is not set, and so no facet is installed (see below)
+                    commandExecuteIn = CommandExecuteIn.FOREGROUND; // in Estatio, arch rule enforces that we BACKGROUND is disallowed, so this is safe.
                     break;
                 default:
                     // do v1
+                    commandReification = property.command();
                     commandPersistence = property.commandPersistence();
+                    commandExecuteIn = property.commandExecuteIn();
             }
         }
-        final CommandExecuteIn commandExecuteIn = property != null? property.commandExecuteIn() :  CommandExecuteIn.FOREGROUND;
         final Class<? extends CommandDtoProcessor> processorClass =
                 property != null ? property.commandDtoProcessor() : null;
         final CommandDtoProcessor processor = newProcessorElseNull(processorClass);
@@ -73,6 +82,7 @@ public class CommandFacetForPropertyAnnotation extends CommandFacetAbstract {
                 final CommandPropertiesConfiguration setting = CommandPropertiesConfiguration.parse(configuration);
                 switch (setting) {
                 case NONE:
+                    // in Estatio, this is the branch we go down if AS_CONFIGURED, because the key 'isis.services.command.properties' is not set
                     return null;
                 default:
                     return property != null

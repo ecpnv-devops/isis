@@ -40,30 +40,36 @@ public class CommandFacetForActionAnnotation extends CommandFacetAbstract {
             final ServicesInjector servicesInjector,
             final FacetHolder holder) {
 
-        CommandReification commandReification =
-                action != null
-                    ? action.command()
-                    : CommandReification.AS_CONFIGURED;
+        CommandReification commandReification = CommandReification.AS_CONFIGURED;
         CommandPersistence commandPersistence = CommandPersistence.PERSISTED;
+        CommandExecuteIn commandExecuteIn = CommandExecuteIn.FOREGROUND;  // in Estatio, arch rule enforces that we BACKGROUND is disallowed, so this is safe.
+
         if(action!=null) {
             switch (action.commandPublishing()) {
                 // v2
+                case ENABLED:
+                    commandReification = CommandReification.ENABLED;
+                    commandPersistence = CommandPersistence.PERSISTED;
+                    commandExecuteIn = CommandExecuteIn.FOREGROUND; // in Estatio, arch rule enforces that we BACKGROUND is disallowed, so this is safe.
+                    break;
                 case DISABLED:
+                    commandReification = CommandReification.DISABLED;
                     commandPersistence = CommandPersistence.NOT_PERSISTED;
+                    commandExecuteIn = CommandExecuteIn.FOREGROUND; // in Estatio, arch rule enforces that we BACKGROUND is disallowed, so this is safe.
+                    break;
+                case AS_CONFIGURED:
+                    commandReification = CommandReification.DISABLED;
+                    commandPersistence = CommandPersistence.PERSISTED;  // important for Estatio as the key 'isis.services.command.actions' *is* set, and so a facet is installed if not safe semantics (see below)
+                    commandExecuteIn = CommandExecuteIn.FOREGROUND; // in Estatio, arch rule enforces that we BACKGROUND is disallowed, so this is safe.
                     break;
                 case NOT_SPECIFIED:
-                case AS_CONFIGURED:
-                    commandPersistence = CommandPersistence.IF_HINTED;
-                    break;
                 default:
                     // v1
                     commandPersistence = action.commandPersistence();
+                    commandReification = action.command();
+                    commandExecuteIn = action.commandExecuteIn();
             }
         }
-        final CommandExecuteIn commandExecuteIn =
-                action != null
-                    ? action.commandExecuteIn()
-                    :  CommandExecuteIn.FOREGROUND;
         final Class<? extends CommandDtoProcessor> processorClass =
                 action != null
                     ? action.commandDtoProcessor()
@@ -77,7 +83,6 @@ public class CommandFacetForActionAnnotation extends CommandFacetAbstract {
         final Persistence persistence = CommandPersistence.from(commandPersistence);
         final ExecuteIn executeIn = CommandExecuteIn.from(commandExecuteIn);
 
-
         switch (commandReification) {
             case AS_CONFIGURED:
                 final CommandActionsConfiguration setting = CommandActionsConfiguration.parse(configuration);
@@ -85,6 +90,7 @@ public class CommandFacetForActionAnnotation extends CommandFacetAbstract {
                     case NONE:
                         return null;
                     case IGNORE_SAFE:
+                        // in Estatio, this is the branch we go down if AS_CONFIGURED, because the key 'isis.services.command.actions' is set to 'ignoreQueryOnly'
                         final ActionSemanticsFacet actionSemanticsFacet = holder.getFacet(ActionSemanticsFacet.class);
                         if(actionSemanticsFacet == null) {
                             throw new IllegalStateException("Require ActionSemanticsFacet in order to process");
