@@ -155,7 +155,7 @@ public @interface Property {
      * or {@link org.apache.isis.applib.services.publish.PublisherService} is registered with the framework.
      * </p>
      *
-     * @Deprecated replaced by executionPublishing
+     * @Deprecated replaced by {@link #executionPublishing()}
      */
     @Deprecated
     Publishing publishing() default Publishing.AS_CONFIGURED;
@@ -163,9 +163,9 @@ public @interface Property {
 
     /**
      * Whether
-     * {@link Execution}s
+     * {@link org.apache.isis.applib.services.iactn.Interaction.Execution}s
      * (triggered property edits), should be dispatched to
-     * {@link ExecutionSubscriber}s.
+     * {@link org.apache.isis.applib.services.publish.PublisherService}s.
      *
      * @see Action#executionPublishing()
      */

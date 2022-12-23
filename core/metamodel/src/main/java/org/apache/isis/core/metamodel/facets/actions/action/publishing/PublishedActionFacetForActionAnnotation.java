@@ -37,8 +37,10 @@ public class PublishedActionFacetForActionAnnotation extends PublishedActionFace
 
         Publishing publishing = Publishing.AS_CONFIGURED;
         if(action != null){
-            publishing = action.executionPublishing() == Publishing.AS_CONFIGURED
-                    ? action.publishing() : action.executionPublishing();
+            Publishing publishingAsPerV2 = action.executionPublishing();
+            Publishing publishingAsPerV1 = action.publishing();
+
+            publishing = publishingAsPerV2 == Publishing.NOT_SPECIFIED ? publishingAsPerV1 : publishingAsPerV2;
         };
 
         switch (publishing) {
