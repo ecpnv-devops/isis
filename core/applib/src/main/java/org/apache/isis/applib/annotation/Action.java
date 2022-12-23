@@ -141,7 +141,7 @@ public @interface Action {
     @Deprecated
     CommandPersistence commandPersistence() default CommandPersistence.PERSISTED;
 
-    Publishing commandPublishing() default Publishing.ENABLED;
+    Publishing commandPublishing() default Publishing.NOT_SPECIFIED;
 
     /**
      * How the command/action should be executed.

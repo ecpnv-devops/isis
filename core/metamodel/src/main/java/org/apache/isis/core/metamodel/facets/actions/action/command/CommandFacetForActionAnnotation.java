@@ -62,7 +62,7 @@ public class CommandFacetForActionAnnotation extends CommandFacetAbstract {
                     commandPersistence = CommandPersistence.PERSISTED;  // important for Estatio as the key 'isis.services.command.actions' *is* set, and so a facet is installed if not safe semantics (see below)
                     commandExecuteIn = CommandExecuteIn.FOREGROUND; // in Estatio, arch rule enforces that we BACKGROUND is disallowed, so this is safe.
                     break;
-                case NOT_SPECIFIED:
+                case NOT_SPECIFIED: // this is the default if there is no attribute set.
                 default:
                     // v1
                     commandPersistence = action.commandPersistence();

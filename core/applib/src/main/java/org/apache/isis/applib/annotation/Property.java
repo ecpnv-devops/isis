@@ -122,7 +122,7 @@ public @interface Property {
      * @see Property#commandDtoProcessor()
      */
     Publishing commandPublishing()
-            default Publishing.ENABLED;
+            default Publishing.NOT_SPECIFIED;
 
     /**
      * How the {@link org.apache.isis.applib.services.command.Command Command} object provided by the

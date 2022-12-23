@@ -59,6 +59,7 @@ public class CommandFacetForPropertyAnnotation extends CommandFacetAbstract {
                     commandPersistence = CommandPersistence.NOT_PERSISTED;  // unimportant for Estatio as the key 'isis.services.command.properties' is not set, and so no facet is installed (see below)
                     commandExecuteIn = CommandExecuteIn.FOREGROUND; // in Estatio, arch rule enforces that we BACKGROUND is disallowed, so this is safe.
                     break;
+                case NOT_SPECIFIED: // this is the default if there is no attribute set.
                 default:
                     // do v1
                     commandReification = property.command();
