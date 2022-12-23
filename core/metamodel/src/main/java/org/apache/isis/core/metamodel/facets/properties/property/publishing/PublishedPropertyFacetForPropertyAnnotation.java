@@ -35,13 +35,10 @@ public class PublishedPropertyFacetForPropertyAnnotation extends PublishedProper
 
         Publishing publishing = Publishing.AS_CONFIGURED;
         if(property!=null){
-            // Test for v2
-            if (property.executionPublishing()!=Publishing.NOT_SPECIFIED){
-                publishing = property.executionPublishing();
-            }else{
-                // do v1
-                publishing = property.publishing();
-            }
+            Publishing publishingAsPerV2 = property.executionPublishing();
+            Publishing publishingAsPerV1 = property.publishing();
+
+            publishing = publishingAsPerV2 == Publishing.NOT_SPECIFIED ? publishingAsPerV1 : publishingAsPerV2;
         }
 
         switch (publishing) {
@@ -56,6 +53,7 @@ public class PublishedPropertyFacetForPropertyAnnotation extends PublishedProper
                             : new PublishedPropertyFacetFromConfiguration(holder);
                 }
             case DISABLED:
+            case NOT_SPECIFIED:
                 return null;
             case ENABLED:
                 return new PublishedPropertyFacetForPropertyAnnotation(holder);

@@ -45,7 +45,6 @@ public class PublishedActionFacetForActionAnnotation extends PublishedActionFace
 
         switch (publishing) {
             case AS_CONFIGURED:
-
                 final PublishActionsConfiguration setting = PublishActionsConfiguration.parse(configuration);
                 switch (setting) {
                     case NONE:
@@ -67,6 +66,7 @@ public class PublishedActionFacetForActionAnnotation extends PublishedActionFace
                                 : new PublishedActionFacetFromConfiguration(publishingPayloadFactory, holder);
                 }
             case DISABLED:
+            case NOT_SPECIFIED:
                 return null;
             case ENABLED:
                 return new PublishedActionFacetForActionAnnotation(
