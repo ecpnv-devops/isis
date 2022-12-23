@@ -223,11 +223,27 @@ public @interface Property {
      *     To ensure that the property is actually not persisted in the objectstore, also annotate with {@link NotPersistent}.
      * </p>
      *
-     * @deprecated replaced with snapshot
+     * @deprecated replaced with {@link #entityChangePublishing()}
      */
     @Deprecated
     boolean notPersisted() default false;
 
+
+    /**
+     * When set to {@link Publishing#DISABLED},
+     * vetoes publishing of updates for this property.
+     * Otherwise has no effect, except when using {@link Publishing#ENABLED} to override
+     * an inherited property annotation, which is a supported use-case.
+     *
+     * <p>
+     * Relates to {@link DomainObject#entityChangePublishing()}, which controls
+     * whether entity-change-publishing is enabled for the corresponding entity type.
+     *
+     * @see DomainObject#entityChangePublishing()
+     * @apiNote does only apply to persistent properties of entity objects
+     */
+    Publishing entityChangePublishing()
+            default Publishing.NOT_SPECIFIED;
 
 
     /**
@@ -235,7 +251,7 @@ public @interface Property {
      *
      * <p>
      *     To ensure that the property is actually not persisted in the objectstore, also annotate with the JDO annotation
-     *     <code>javax.jdo.annotations.NotPersistent</code>
+     *     {@link NotPersistent}
      * </p>
      */
     Snapshot snapshot()
