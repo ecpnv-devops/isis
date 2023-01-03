@@ -41,13 +41,13 @@ public class NotPersistedFacetForPropertyAnnotation extends NotPersistedFacetAbs
         }
 
         // v2 support
-        Publishing publishing = property.entityChangePublishing();
+        final Publishing publishing = property.entityChangePublishing();
         switch (publishing) {
             case ENABLED:
             case AS_CONFIGURED:
-                return new NotPersistedFacetForPropertyAnnotation(holder);
-            case DISABLED:
                 return null;
+            case DISABLED:
+                return new NotPersistedFacetForPropertyAnnotation(holder);
             case NOT_SPECIFIED:
                 break;
         }
