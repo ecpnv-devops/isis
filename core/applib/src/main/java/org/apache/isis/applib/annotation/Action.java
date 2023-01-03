@@ -141,7 +141,7 @@ public @interface Action {
     @Deprecated
     CommandPersistence commandPersistence() default CommandPersistence.PERSISTED;
 
-    Publishing commandPublishing() default Publishing.ENABLED;
+    Publishing commandPublishing() default Publishing.NOT_SPECIFIED;
 
     /**
      * How the command/action should be executed.
@@ -183,12 +183,19 @@ public @interface Action {
      * or {@link org.apache.isis.applib.services.publish.PublisherService} is registered with the framework.
      * </p>
      *
-     * @Deprecated and replaced by executionPublishing()
+     * @Deprecated and replaced by {@link #executionPublishing()}
      */
     @Deprecated
     Publishing publishing() default Publishing.AS_CONFIGURED;
 
-    Publishing executionPublishing() default Publishing.AS_CONFIGURED;
+    /**
+     * Whether {@link org.apache.isis.applib.services.iactn.Interaction.Execution}s (triggered by action invocations), should
+     * be published to {@link PublisherService}s.
+     *
+     * @see Property#executionPublishing()
+     */
+    Publishing executionPublishing()
+            default Publishing.NOT_SPECIFIED;
 
     /**
      * @deprecated - not supported by {@link PublisherService}.
