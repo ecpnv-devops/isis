@@ -68,9 +68,6 @@ public abstract class ProgrammingModelAbstract implements ProgrammingModel {
         if (facetFactories.isEmpty()) {
             initializeFacetFactories();
         }
-        if (postProcessors.isEmpty()) {
-            initializePostProcessors();
-        }
     }
 
     private void initializeFacetFactories() {
@@ -80,9 +77,6 @@ public abstract class ProgrammingModelAbstract implements ProgrammingModel {
         }
     }
 
-    private void initializePostProcessors() {
-        postProcessors.add(new DeriveFacetsPostProcessor());
-    }
 
     private static FacetFactory asFacetFactory(final Object factoryInstanceOrClass) {
         if(factoryInstanceOrClass instanceof FacetFactory) {

@@ -544,6 +544,13 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
         addFactory(new TranslationFacetFactory());
 
         addFactory(new ViewModelSemanticCheckingFacetFactory());
+
+
+        //
+        // post processors
+        //
+
+        addPostProcessor(new DeriveFacetsPostProcessor());
     }
 
 }
