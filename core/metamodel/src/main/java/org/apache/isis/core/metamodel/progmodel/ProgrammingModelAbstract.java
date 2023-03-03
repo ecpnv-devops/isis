@@ -29,6 +29,7 @@ import org.apache.isis.core.commons.config.IsisConfiguration;
 import org.apache.isis.core.commons.factory.InstanceUtil;
 import org.apache.isis.core.metamodel.facetapi.MetaModelValidatorRefiner;
 import org.apache.isis.core.metamodel.facets.FacetFactory;
+import org.apache.isis.core.metamodel.postprocessors.param.DeriveFacetsPostProcessor;
 import org.apache.isis.core.metamodel.specloader.validator.MetaModelValidatorComposite;
 import org.apache.isis.progmodels.dflt.ProgrammingModelFacetsJava5;
 
@@ -36,6 +37,7 @@ public abstract class ProgrammingModelAbstract implements ProgrammingModel {
 
     private final List<FacetFactory> facetFactories = Lists.newArrayList();
     private final List<Object> facetFactoryInstancesOrClasses = Lists.newLinkedList();
+    protected final List<ObjectSpecificationPostProcessor> postProcessors = Lists.newLinkedList();
 
     public static final String KEY_IGNORE_DEPRECATED = "isis.reflector.facets.ignoreDeprecated";
 
@@ -63,18 +65,18 @@ public abstract class ProgrammingModelAbstract implements ProgrammingModel {
     }
 
     private void initializeIfRequired() {
-        if(!facetFactories.isEmpty()) {
-            return;
+        if (facetFactories.isEmpty()) {
+            initializeFacetFactories();
         }
-        initialize();
     }
 
-    private void initialize() {
+    private void initializeFacetFactories() {
         for (final Object factoryInstanceOrClass : facetFactoryInstancesOrClasses) {
             final FacetFactory facetFactory = asFacetFactory(factoryInstanceOrClass);
             facetFactories.add(facetFactory);
         }
     }
+
 
     private static FacetFactory asFacetFactory(final Object factoryInstanceOrClass) {
         if(factoryInstanceOrClass instanceof FacetFactory) {
@@ -141,7 +143,6 @@ public abstract class ProgrammingModelAbstract implements ProgrammingModel {
         }
     }
 
-
     @Override
     public final void removeFactory(final Class<? extends FacetFactory> factoryClass) {
         assertNotInitialized();
@@ -162,4 +163,15 @@ public abstract class ProgrammingModelAbstract implements ProgrammingModel {
             }
         }
     }
+
+    @Override
+    public void addPostProcessor(final ObjectSpecificationPostProcessor postProcessor) {
+        this.postProcessors.add(postProcessor);
+    }
+
+    @Override
+    public List<ObjectSpecificationPostProcessor> getPostProcessors() {
+        return this.postProcessors;
+    }
+
 }
