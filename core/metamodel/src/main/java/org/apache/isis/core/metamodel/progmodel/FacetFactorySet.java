@@ -41,6 +41,8 @@ public interface FacetFactorySet {
 
     void removeFactory(Class<? extends FacetFactory> facetFactoryClass);
 
+    void addPostProcessor(final ObjectSpecificationPostProcessor postProcessor);
+
     /**
      * Key used to lookup comma-separated list of {@link FacetFactory}s to
      * include.

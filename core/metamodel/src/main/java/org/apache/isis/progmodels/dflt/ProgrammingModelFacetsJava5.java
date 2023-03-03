@@ -5,9 +5,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -260,18 +260,18 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
         addFactory(new PropertyChoicesFacetViaMethodFactory());
         addFactory(new PropertyAutoCompleteFacetMethodFactory());
         addFactory(new PropertyDefaultFacetViaMethodFactory());
-        
+
         addFactory(new MandatoryFacetOnPropertyStaticMethodFactory());
 
         // collections
         addFactory(new CollectionAccessorFacetViaAccessorFactory());
         addFactory(new CollectionClearFacetFactory());
         addFactory(new CollectionAddToRemoveFromAndValidateFacetFactory());
-        
+
         addFactory(new SortedByFacetAnnotationFactory());
 
         // actions
-        
+
         addFactory(new ActionParameterHiddenFacetViaMethodFactory());
         addFactory(new ActionParameterDisabledFacetViaMethodFactory());
         addFactory(new ActionValidationFacetViaMethodFactory());
@@ -283,16 +283,16 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
         addFactory(new ActionParameterDefaultsFacetViaMethodFactory());
 
         // members in general
-        
+
         addFactory(new NamedFacetStaticMethodFactory());
-        
+
         addFactory(new DescribedAsFacetStaticMethodFactory());
         addFactory(new DisableForSessionFacetViaMethodFactory());
         addFactory(new DisableForContextFacetViaMethodFactory());
-        
+
         addFactory(new DisabledFacetStaticMethodFacetFactory());
         addFactory(new HideForSessionFacetViaMethodFactory());
-        
+
         addFactory(new HiddenFacetStaticMethodFactory());
         addFactory(new HideForContextFacetViaMethodFactory());
         addFactory(new RenderFacetOrResolveFactory());
@@ -306,20 +306,20 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
 
         addFactory(new ValidateObjectFacetMethodFactory());
         addFactory(new ObjectValidPropertiesFacetImplFactory());
-        
+
         addFactory(new PluralFacetStaticMethodFactory());
-        
+
         addFactory(new org.apache.isis.core.metamodel.facets.object.named.staticmethod.NamedFacetStaticMethodFactory());
 
         addFactory(new MemberOrderFacetFactory());
-        
+
         addFactory(new ActionOrderFacetAnnotationFactory());
-        
+
         addFactory(new FieldOrderFacetAnnotationFactory());
         addFactory(new MemberGroupLayoutFacetFactory());
 
         addFactory(new AggregatedAnnotationFactory());
-        
+
         addFactory(new BookmarkPolicyFacetViaBookmarkableAnnotationElseFallbackFactory());
         addFactory(new HomePageFacetAnnotationFactory());
         addFactory(new ChoicesFacetFromBoundedMarkerInterfaceFactory());
@@ -328,7 +328,7 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
         //addFactory(new PropertyDefaultFacetDerivedFromTypeFactory()); ... logic moved to post-processor
         //addFactory(new ActionParameterDefaultFacetDerivedFromTypeFactory()); ... logic moved to post-processor
 
-        
+
         addFactory(new DescribedAsFacetOnTypeAnnotationFactory());
         addFactory(new DescribedAsFacetOnMemberFactory());
         //addFactory(new DescribedAsFacetOnParameterAnnotationElseDerivedFromTypeFactory()); ... logic moved to post-processor
@@ -338,7 +338,7 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
 
         addFactory(new DisabledFacetOnMemberFromPropertiesFactory());
         addFactory(new EncodableFacetAnnotationElseConfigurationFactory());
-        
+
         addFactory(new PrototypeFacetForExplorationAnnotationFactory());
 
         addFactory(new NotContributedFacetAnnotationFactory());
@@ -350,13 +350,13 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
         addFactory(new NotContributedFacetDerivedFromDomainServiceFacetFactory());
         addFactory(new NotInServiceMenuFacetDerivedFromDomainServiceFacetFactory());
 
-        
+
         addFactory(new HiddenFacetOnTypeAnnotationFactory());
         // must come after the TitleAnnotationFacetFactory, because can act as an override
-        
+
         addFactory(new HiddenFacetOnMemberFromPropertiesFactory());
 
-        
+
             addFactory(new CssClassFacetOnTypeAnnotationFactory());
         addFactory(new CssClassFacetOnMemberFactory());
         // must come after CssClassFacetOnMemberFactory
@@ -376,7 +376,7 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
         addFactory(new MixinFacetForMixinAnnotationFactory());
 
 
-        
+
         addFactory(new MaxLengthFacetOnTypeAnnotationFactory());
 
         addFactory(new MaxLengthFacetOnActionAnnotationFactory());
@@ -384,7 +384,7 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
 
         addFactory(new MustSatisfySpecificationFromMustSatisfyAnnotationOnTypeFacetFactory());
 
-        
+
         addFactory(new MultiLineFacetOnTypeAnnotationFactory());
         addFactory(new MultiLineFacetOnPropertyFactory());
         addFactory(new MultiLineFacetOnParameterAnnotationFactory());
@@ -430,14 +430,14 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
 
         addFactory(new NamedFacetOnTypeAnnotationFactory());
         addFactory(new NamedFacetOnMemberFactory());
-        
+
         addFactory(new NamedFacetOnParameterAnnotationFactory());
 
         addFactory(new NotPersistableFacetAnnotationFactory());
         addFactory(new NotPersistableFacetMarkerInterfaceFactory());
 
         addFactory(new ParseableFacetAnnotationElseConfigurationFactory());
-        
+
         addFactory(new PluralAnnotationFacetFactory());
 
         addFactory(new PagedFacetOnTypeAnnotationFactory());
@@ -447,28 +447,28 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
         addFactory(new PagedFacetOnActionFactory());
 
         // must come after any facets that install titles
-        
+
         addFactory(new MaskFacetOnTypeAnnotationFactory());
         addFactory(new MaskFacetOnPropertyAnnotationFactory());
-        
+
         addFactory(new MaskFacetOnParameterAnnotationFactory());
 
         // must come after any facets that install titles, and after mask
         // if takes precedence over mask.
-        
+
         addFactory(new RegExFacetOnTypeAnnotationFactory());
 
         // addFactory(new TypicalLengthFacetOnPropertyDerivedFromTypeFacetFactory()); ... logic moved to post-processor
         // addFactory(new TypicalLengthFacetOnParameterDerivedFromTypeFacetFactory()); ... logic moved to post-processor
 
-        
+
         addFactory(new TypicalLengthFacetOnTypeAnnotationFactory());
         addFactory(new TypicalLengthOnPropertyFacetFactory());
-        
+
         addFactory(new TypicalLengthFacetOnParameterAnnotationFactory());
-        
+
         addFactory(new RenderedAsDayBeforeAnnotationOnPropertyFacetFactory());
-        
+
         addFactory(new RenderedAsDayBeforeFacetOnParameterAnnotationFactory());
 
         // built-in value types for Java language
@@ -546,10 +546,4 @@ public final class ProgrammingModelFacetsJava5 extends ProgrammingModelAbstract 
         addFactory(new ViewModelSemanticCheckingFacetFactory());
     }
 
-    @Override
-    public List<ObjectSpecificationPostProcessor> getPostProcessors() {
-        return Lists.<ObjectSpecificationPostProcessor>newArrayList(
-            new DeriveFacetsPostProcessor()
-        );
-    }
 }
