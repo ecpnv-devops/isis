@@ -1,6 +1,7 @@
 variables:
   BASELINE: "1.17"
-  MAVEN_DEPLOY_OPTS: ""
+  MAVEN_DEPLOY_OPTS: "-DinstallAtEnd=true -DdeployAtEnd=true -Dgitlab"
+  MAVEN_EXTRA_OPTS: "-T8"
 
 include:
   - project: 'ecpnv.devops/infrastructure/pipeline-resources'
