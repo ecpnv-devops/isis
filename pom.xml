@@ -42,40 +42,22 @@
         <module>core</module>
     </modules>
 
-    <profiles>
-        <profile>
+    <distributionManagement>
+        <repository>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.com/api/v4/projects/34957734/packages/maven</url>
+        </repository>
+    </distributionManagement>
+
+<!--
+    <distributionManagement>
+        <repository>
             <id>github</id>
-            <activation>
-                <property>
-                    <name>!gitlab</name>
-                </property>
-            </activation>
-            <distributionManagement>
-                <repository>
-                    <id>github</id>
-                    <name>Github Releases</name>
-                    <url>https://maven.pkg.github.com/ecpnv-devops/isis</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>gitlab</id>
-            <activation>
-                <property>
-                    <name>gitlab</name>
-                </property>
-            </activation>
-            <distributionManagement>
-                <repository>
-                    <id>gitlab-maven</id>
-                    <url>https://gitlab.com/api/v4/projects/34957734/packages/maven</url>
-                </repository>
-                <snapshotRepository>
-                    <id>gitlab-maven</id>
-                    <url>https://gitlab.com/api/v4/projects/34957734/packages/maven</url>
-                </snapshotRepository>
-            </distributionManagement>
-        </profile>
-    </profiles>
+            <name>Github Releases</name>
+            <url>https://maven.pkg.github.com/ecpnv-devops/isis</url>
+        </repository>
+    </distributionManagement>
+-->
+
 
 </project>
