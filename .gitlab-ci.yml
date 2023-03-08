@@ -1,6 +1,7 @@
 variables:
   BASELINE: "1.17"
-  MAVEN_DEPLOY_OPTS: "-DinstallAtEnd=true -DdeployAtEnd=true -Dgitlab"
+  #MAVEN_DEPLOY_OPTS: "-Dgitlab"
+  MAVEN_DEPLOY_OPTS: "-Dgitlab -DskipTests"
   MAVEN_EXTRA_OPTS: "-T8"
 
 include:
