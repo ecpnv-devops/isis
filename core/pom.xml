@@ -2523,11 +2523,20 @@ ${license.additional-notes}
 
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>Github Releases</name>
-            <url>https://maven.pkg.github.com/ecpnv-devops/isis</url>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.com/api/v4/projects/34957734/packages/maven</url>
         </repository>
     </distributionManagement>
+
+    <!--
+        <distributionManagement>
+            <repository>
+                <id>github</id>
+                <name>Github Releases</name>
+                <url>https://maven.pkg.github.com/ecpnv-devops/isis</url>
+            </repository>
+        </distributionManagement>
+    -->
 
 </project>
 
