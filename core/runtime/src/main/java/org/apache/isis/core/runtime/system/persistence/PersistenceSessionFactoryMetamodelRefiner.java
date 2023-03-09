@@ -18,6 +18,8 @@
  */
 package org.apache.isis.core.runtime.system.persistence;
 
+import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.core.commons.config.IsisConfiguration;
 import org.apache.isis.core.metamodel.facetapi.MetaModelRefiner;
 import org.apache.isis.core.metamodel.progmodel.ProgrammingModel;
@@ -38,6 +40,7 @@ import org.apache.isis.objectstore.jdo.metamodel.facets.prop.notpersistent.JdoNo
 import org.apache.isis.objectstore.jdo.metamodel.facets.prop.primarykey.JdoPrimaryKeyAnnotationFacetFactory;
 import org.apache.isis.objectstore.jdo.metamodel.specloader.validator.JdoMetaModelValidator;
 
+@DomainService(nature = NatureOfService.DOMAIN)
 public class PersistenceSessionFactoryMetamodelRefiner implements MetaModelRefiner {
 
     @Override

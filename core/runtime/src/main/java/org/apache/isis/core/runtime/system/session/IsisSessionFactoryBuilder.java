@@ -20,9 +20,7 @@
 package org.apache.isis.core.runtime.system.session;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -51,7 +49,6 @@ import org.apache.isis.core.runtime.system.context.IsisContext;
 import org.apache.isis.core.runtime.system.internal.IsisLocaleInitializer;
 import org.apache.isis.core.runtime.system.internal.IsisTimeZoneInitializer;
 import org.apache.isis.core.runtime.system.persistence.PersistenceSessionFactory;
-import org.apache.isis.core.runtime.system.persistence.PersistenceSessionFactoryMetamodelRefiner;
 import org.apache.isis.core.runtime.systemusinginstallers.IsisComponentProvider;
 import org.apache.isis.core.runtime.systemusinginstallers.IsisComponentProviderDefault2;
 import org.apache.isis.core.runtime.threadpool.ThreadPoolSupport;
@@ -154,8 +151,11 @@ public class IsisSessionFactoryBuilder {
             servicesInjector.addFallbackIfRequired(AuthorizationManager.class, authorizationManager);
 
             // specificationLoader
-            final Collection<MetaModelRefiner> metaModelRefiners = refiners(
-                    authenticationManager, authorizationManager, new PersistenceSessionFactoryMetamodelRefiner());
+            List<Object> metaModelRefinersCandidates = new ArrayList<>(servicesInjector.lookupServices(MetaModelRefiner.class));
+            metaModelRefinersCandidates.add(authenticationManager);
+            metaModelRefinersCandidates.add(authorizationManager);
+            final Collection<MetaModelRefiner> metaModelRefiners = ListExtensions.filtered(metaModelRefinersCandidates, MetaModelRefiner.class);
+
             final SpecificationLoader specificationLoader =
                     componentProvider.provideSpecificationLoader(servicesInjector, metaModelRefiners);
             servicesInjector.addFallbackIfRequired(SpecificationLoader.class, specificationLoader);
@@ -292,10 +292,6 @@ public class IsisSessionFactoryBuilder {
         }
 
         return isisSessionFactory;
-    }
-
-    private static Collection<MetaModelRefiner> refiners(Object... possibleRefiners ) {
-        return ListExtensions.filtered(Arrays.asList(possibleRefiners), MetaModelRefiner.class);
     }
 
     //endregion
