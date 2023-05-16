@@ -252,6 +252,8 @@ public @interface Action {
     @Deprecated
     String associateWith() default "";
 
+    String choicesFrom() default "";
+
     /**
      * Specifies the sequence/order in the UI for an action that's been associated with a property or collection.
      *
