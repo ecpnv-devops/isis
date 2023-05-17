@@ -503,7 +503,9 @@ public class ActionAnnotationFacetFactory extends FacetFactoryAbstract
 
         final Action action = Annotations.getAnnotationFromMethodOrClass(method, Action.class);
         if (action != null) {
-            final String associateWith = action.associateWith();
+            final String associateWith = Strings.isNullOrEmpty(action.choicesFrom())
+                    ? action.associateWith()
+                    : action.choicesFrom();
             if(!Strings.isNullOrEmpty(associateWith)) {
                 final String associateWithSequence = action.associateWithSequence();
                 FacetUtil.addFacet(
