@@ -50,11 +50,11 @@ public class FixtureResult {
     private String fixtureScriptQualifiedName;
 
     @Programmatic
-    String getFixtureScriptQualifiedName() {
+    public String getFixtureScriptQualifiedName() {
         return fixtureScriptQualifiedName;
     }
 
-    void setFixtureScriptQualifiedName(String fixtureScriptQualifiedName) {
+    public void setFixtureScriptQualifiedName(String fixtureScriptQualifiedName) {
         this.fixtureScriptQualifiedName = fixtureScriptQualifiedName;
     }
 

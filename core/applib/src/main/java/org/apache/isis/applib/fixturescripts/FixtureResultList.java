@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.isis.testing.fixtures.applib.fixturescripts.FixtureResult;
 
 /**
  * Collecting parameter.

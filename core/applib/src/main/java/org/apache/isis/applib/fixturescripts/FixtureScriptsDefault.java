@@ -36,6 +36,7 @@ import org.apache.isis.applib.annotation.RestrictTo;
 import org.apache.isis.testing.fixtures.applib.events.FixturesInstalledEvent;
 import org.apache.isis.testing.fixtures.applib.events.FixturesInstallingEvent;
 import org.apache.isis.applib.services.eventbus.EventBusService;
+import org.apache.isis.testing.fixtures.applib.fixturescripts.FixtureResult;
 
 /**
  * Default instance of {@link FixtureScripts}, instantiated automatically by the framework if no custom user-defined instance was
