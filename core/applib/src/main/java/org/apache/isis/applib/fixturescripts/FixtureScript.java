@@ -34,6 +34,7 @@ import com.google.common.collect.Maps;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
+import org.apache.isis.testing.fixtures.applib.fixturescripts.FixtureResult;
 import org.apache.isis.applib.AbstractViewModel;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Programmatic;

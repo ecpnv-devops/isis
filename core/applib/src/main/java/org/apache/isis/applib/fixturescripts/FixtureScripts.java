@@ -50,6 +50,7 @@ import org.apache.isis.applib.services.memento.MementoService.Memento;
 import org.apache.isis.applib.services.registry.ServiceRegistry2;
 import org.apache.isis.applib.services.xactn.TransactionService;
 import org.apache.isis.applib.util.ObjectContracts;
+import org.apache.isis.testing.fixtures.applib.fixturescripts.FixtureResult;
 
 /**
  * Rather than subclassing, instead implement
